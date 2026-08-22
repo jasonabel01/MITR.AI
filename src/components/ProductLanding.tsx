@@ -162,31 +162,49 @@ export const ProductLanding: React.FC<ProductLandingProps> = ({
       <section
         id="sanctuary"
         ref={sanctuaryRef}
-        className="relative z-40 bg-[#0B0F19] py-16 px-4 border-t border-white/10"
+        className="relative z-40 bg-[#0B0F19] py-20 px-4 border-t border-white/10 overflow-hidden min-h-[90vh] flex flex-col justify-center"
       >
-        <div className="max-w-5xl mx-auto space-y-4 text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold tracking-wide">
+        {/* Dynamic Looping Background (GIF / Video) */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover object-center opacity-30 scale-105 filter blur-[1px]"
+            src="https://res.cloudinary.com/dsuwzuaxp/video/upload/video1_horxtt.mp4"
+          />
+          {/* Multi-layered dark gradient & emerald glow for optimal contrast */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0B0F19] via-[#0B0F19]/80 to-[#0B0F19]" />
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute bottom-10 right-10 w-[400px] h-[400px] bg-teal-500/10 rounded-full blur-[100px] pointer-events-none" />
+        </div>
+
+        <div className="relative z-10 max-w-5xl mx-auto space-y-4 text-center mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 text-xs font-semibold tracking-wide shadow-lg shadow-emerald-500/10 backdrop-blur-md">
             <Radio className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
             <span>LIVE INTERACTIVE SANCTUARY TERMINAL</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight drop-shadow-md">
             Step Inside The Sanctuary
           </h2>
-          <p className="text-slate-400 text-sm max-w-lg mx-auto">
+          <p className="text-slate-300 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
             Choose your dialect and intent tags below. Click <strong>"Find a Safe Peer"</strong> to launch the real-time encrypted queue.
           </p>
         </div>
 
-        <SanctuaryLanding
-          alias={alias}
-          onRefreshAlias={onRefreshAlias}
-          selectedLang={selectedLang}
-          onSelectLang={onSelectLang}
-          selectedTags={selectedTags}
-          onToggleTag={onToggleTag}
-          onFindPeer={onFindPeer}
-          onOpenSandbox={onOpenSandbox}
-        />
+        <div className="relative z-10">
+          <SanctuaryLanding
+            alias={alias}
+            onRefreshAlias={onRefreshAlias}
+            selectedLang={selectedLang}
+            onSelectLang={onSelectLang}
+            selectedTags={selectedTags}
+            onToggleTag={onToggleTag}
+            onFindPeer={onFindPeer}
+            onOpenSandbox={onOpenSandbox}
+          />
+        </div>
       </section>
 
       {/* ── 3. Safety Architecture & Engineering Pillars ── */}
