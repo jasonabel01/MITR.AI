@@ -164,20 +164,17 @@ export const ProductLanding: React.FC<ProductLandingProps> = ({
         ref={sanctuaryRef}
         className="relative z-40 bg-[#0B0F19] py-20 px-4 border-t border-white/10 overflow-hidden min-h-[90vh] flex flex-col justify-center"
       >
-        {/* Dynamic Looping Background (GIF / Video) */}
+        {/* Full-Bleed Sanctuary Artwork Background */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover object-center opacity-30 scale-105 filter blur-[1px]"
-            src="https://res.cloudinary.com/dsuwzuaxp/video/upload/video1_horxtt.mp4"
+          <img
+            src="/sanctuary-bg.jpg"
+            alt="Sanctuary Forest Station"
+            className="w-full h-full object-cover object-center scale-105 filter brightness-[0.7] contrast-[1.05]"
           />
-          {/* Multi-layered dark gradient & emerald glow for optimal contrast */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0B0F19] via-[#0B0F19]/80 to-[#0B0F19]" />
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />
-          <div className="absolute bottom-10 right-10 w-[400px] h-[400px] bg-teal-500/10 rounded-full blur-[100px] pointer-events-none" />
+          {/* Multi-layered dark gradient for high readability and seamless blending */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0B0F19] via-[#0B0F19]/60 to-[#0B0F19]" />
+          <div className="absolute inset-0 bg-[#0B0F19]/40 backdrop-blur-[2px]" />
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[130px] pointer-events-none" />
         </div>
 
         <div className="relative z-10 max-w-5xl mx-auto space-y-4 text-center mb-8">
