@@ -164,7 +164,7 @@ export const ProductLanding: React.FC<ProductLandingProps> = ({
       <section
         id="sanctuary"
         ref={sanctuaryRef}
-        className="relative z-40 bg-[#0B0F19] py-20 px-4 border-t border-white/10 overflow-hidden min-h-[90vh] flex flex-col justify-center"
+        className="relative z-40 bg-[#0B0F19] py-24 px-4 overflow-hidden min-h-[90vh] flex flex-col justify-center"
       >
         {/* Full-Bleed Sanctuary Artwork Background */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -173,9 +173,10 @@ export const ProductLanding: React.FC<ProductLandingProps> = ({
             alt="Sanctuary Forest Station"
             className="w-full h-full object-cover object-center scale-105 filter brightness-[0.7] contrast-[1.05]"
           />
-          {/* Multi-layered dark gradient for high readability and seamless blending */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0B0F19] via-[#0B0F19]/60 to-[#0B0F19]" />
-          <div className="absolute inset-0 bg-[#0B0F19]/40 backdrop-blur-[2px]" />
+          {/* Seamless Top Shade-In & Bottom Shade-Out Gradient Blending */}
+          <div className="absolute top-0 inset-x-0 h-44 bg-gradient-to-b from-[#0B0F19] via-[#0B0F19]/80 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-[#0B0F19]/45 backdrop-blur-[2px]" />
+          <div className="absolute bottom-0 inset-x-0 h-44 bg-gradient-to-t from-[#0B0F19] via-[#0B0F19]/85 to-transparent pointer-events-none" />
           <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[130px] pointer-events-none" />
         </div>
 
@@ -207,7 +208,7 @@ export const ProductLanding: React.FC<ProductLandingProps> = ({
       </section>
 
       {/* ── 3. Safety Architecture, Helplines & Footer with Moody Green Valley Artwork ── */}
-      <div className="relative z-40 overflow-hidden border-t border-white/10">
+      <div className="relative z-40 overflow-hidden">
         {/* Full-Bleed Moody Green Valley Artwork Background Layer */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
           <img
@@ -215,9 +216,10 @@ export const ProductLanding: React.FC<ProductLandingProps> = ({
             alt="Solitary Cabin in Misty Green Nordic Valley"
             className="w-full h-full object-cover object-center scale-105 filter brightness-[0.65] contrast-[1.08]"
           />
-          {/* Deep dark gradient overlays for rich contrast, warmth & readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0B0F19] via-[#08120d]/80 to-[#040806]" />
+          {/* Seamless Top Shade-In & Bottom Shade-Out Gradient Blending */}
+          <div className="absolute top-0 inset-x-0 h-44 bg-gradient-to-b from-[#0B0F19] via-[#0B0F19]/80 to-transparent pointer-events-none" />
           <div className="absolute inset-0 bg-[#06100b]/35 backdrop-blur-[2px]" />
+          <div className="absolute bottom-0 inset-x-0 h-44 bg-gradient-to-t from-[#040806] via-[#040806]/90 to-transparent pointer-events-none" />
           <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[140px] pointer-events-none" />
           <div className="absolute bottom-1/3 left-1/4 w-[600px] h-[600px] bg-teal-500/10 rounded-full blur-[150px] pointer-events-none" />
         </div>

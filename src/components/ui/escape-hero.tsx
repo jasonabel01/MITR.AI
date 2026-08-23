@@ -84,15 +84,15 @@ export const EscapeHero: React.FC<EscapeHeroProps> = ({
             pointerEvents: "none",
           }}
         />
-        {/* Soft bottom gradient for trust bar readability */}
+        {/* Soft bottom gradient for trust bar readability and seamless transition to Sanctuary section */}
         <div
           style={{
             position: "absolute",
             bottom: 0,
             left: 0,
             right: 0,
-            height: "220px",
-            background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.25) 50%, transparent 100%)",
+            height: "260px",
+            background: "linear-gradient(to bottom, transparent 0%, rgba(11, 15, 25, 0.35) 45%, rgba(11, 15, 25, 0.85) 80%, #0B0F19 100%)",
             pointerEvents: "none",
           }}
         />
