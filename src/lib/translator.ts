@@ -10,140 +10,143 @@ interface TranslationResult {
   latencyMs: number;
 }
 
-// ── 1. Hindi Devanagari ➡️ English Sentence & Phrase Mappings ──
-const HINDI_DEVANAGARI_MAP: Array<[RegExp | string, string]> = [
-  // Crisis & Acute distress
-  [/मैं\s*मरना\s*चाहता\s*हूँ/gi, "I want to die"],
-  [/मैं\s*मरना\s*चाहता\s*हूं/gi, "I want to die"],
-  [/मरना\s*चाहता/gi, "want to die"],
-  [/मैं\s*मेरा\s*लाइफ\s*देना\s*चाहता\s*हो/gi, "I want to give up my life"],
-  [/मैं\s*मेरा\s*लाइफ\s*देना\s*चाहता\s*हूँ/gi, "I want to give up my life"],
-  [/मैं\s*अपनी\s*जान\s*देना\s*चाहता\s*हूँ/gi, "I want to end my life"],
-  [/अपनी\s*जान\s*देना/gi, "give up my life"],
-  [/आत्महत्या\s*करना\s*चाहता/gi, "want to commit suicide"],
-  [/खुदकुशी/gi, "suicide"],
+// ── 1. Comprehensive Hindi / Hinglish ➡️ Pure English Sentence Patterns ──
+const HINDI_TO_ENGLISH_PHRASES: Array<[RegExp, string]> = [
+  // Crisis & Acute Distress
+  [/मैं\s*मरना\s*चाहता\s*(हूँ|हूं|हो)/gi, "I want to end my life and die"],
+  [/मरना\s*चाहता\s*(हूँ|हूं|हो)/gi, "I want to die"],
+  [/मैं\s*(मेरा|मेरी|अपनी)\s*(लाइफ|जिंदगी|जान)\s*देना\s*चाहता\s*(हूँ|हूं|हो)/gi, "I want to give up my life"],
+  [/अपनी\s*(जान|जिंदगी)\s*(लेना|देना)/gi, "take my own life"],
+  [/जीने\s*का\s*मन\s*नहीं\s*है/gi, "I don't have the will to live anymore"],
+  [/सब\s*खत्म\s*करना\s*चाहता\s*हूँ/gi, "I want to end everything"],
+  [/आत्महत्या\s*करना\s*चाहता\s*हूँ/gi, "I want to commit suicide"],
+  [/marna chahta (hu|hoon|ho)/gi, "I want to end my life and die"],
+  [/main (mera|meri|apni) (life|zindagi|jaan) dena chahta (hu|hoon|ho)/gi, "I want to give up my life"],
+  [/apni jaan (lena|dena)/gi, "take my own life"],
+  [/jeene ka mann nahi/gi, "I don't have the will to live anymore"],
+  [/sab khatam karna chahta hu/gi, "I want to end everything"],
 
-  // Anxiety & Loneliness
-  [/मुझे\s*बहुत\s*अकेलापन\s*महसूस\s*हो\s*रहा\s*है/gi, "I am feeling deeply lonely and isolated"],
-  [/मुझे\s*बहुत\s*घबराहट\s*हो\s*रही\s*है/gi, "I am experiencing severe anxiety and panic"],
-  [/पढ़ाई\s*का\s*बहुत\s*ज्यादा\s*तनाव\s*है/gi, "There is overwhelming stress from studies and exams"],
-  [/क्या\s*आप\s*मेरी\s*बात\s*सुन\s*सकते\s*हैं\??/gi, "Can you please listen to what I am going through?"],
-  [/मन\s*बहुत\s*परेशान\s*है\s*आज/gi, "My mind is very troubled and restless today"],
-  [/बहुत\s*डर\s*लग\s*रहा\s*है/gi, "I am feeling very scared right now"],
+  // Anxiety, Panic & Overwhelm
+  [/मुझे\s*बहुत\s*(ज्यादा\s*)?घबराहट\s*हो\s*रही\s*है/gi, "I am experiencing severe anxiety and panic"],
+  [/मुझे\s*बहुत\s*(ज्यादा\s*)?तनाव\s*हो\s*रहा\s*है/gi, "I am feeling extremely stressed out"],
+  [/मेरा\s*दिमाग\s*फट\s*रहा\s*है/gi, "My head is throbbing from overwhelming stress"],
   [/सांस\s*लेने\s*में\s*दिक्कत\s*हो\s*रही\s*है/gi, "I am having trouble breathing calmly"],
-  [/कोई\s*मेरी\s*बात\s*नहीं\s*समझता/gi, "No one understands what I am going through"],
-  [/सब\s*ठीक\s*हो\s*जाएगा\s*दोस्त/gi, "Everything will be okay my friend"],
-  [/मैं\s*आपके\s*साथ\s*हूँ/gi, "I am right here with you"],
-  [/चिंता\s*मत\s*करो/gi, "Please don't worry"],
-  [/नमस्ते\s*दोस्त/gi, "Hello friend"],
-  [/आप\s*अकेले\s*नहीं\s*हैं/gi, "You are not alone in this"],
-  [/शुक्रिया/gi, "Thank you"],
-];
-
-// Devanagari Hindi Word-level mapping
-const HINDI_WORD_MAP: Record<string, string> = {
-  मैं: "I",
-  मुझे: "me",
-  मेरा: "my",
-  मेरी: "my",
-  मेरे: "my",
-  लाइफ: "life",
-  जिंदगी: "life",
-  मरना: "to die",
-  चाहता: "want",
-  चाहती: "want",
-  हूँ: "am",
-  हूं: "am",
-  हो: "am",
-  है: "is",
-  हैं: "are",
-  देना: "to give",
-  दोस्त: "friend",
-  अकेला: "alone",
-  अकेलापन: "loneliness",
-  परेशान: "troubled",
-  तनाव: "stress",
-  चिंता: "anxiety",
-  घबराहट: "panic",
-  डर: "fear",
-  रोना: "crying",
-  मदद: "help",
-  बात: "talk",
-  सुनना: "listen",
-  साथ: "together",
-  नहीं: "not",
-  बहुत: "very",
-  ज्यादा: "a lot",
-  आज: "today",
-  कल: "tomorrow",
-  ठीक: "fine",
-};
-
-// ── 2. Hinglish Romanized Patterns ➡️ English ──
-const HINGLISH_PATTERNS: Array<[RegExp, string]> = [
-  [/marna chahta hu/gi, "I want to die"],
-  [/marna chahta hoon/gi, "I want to die"],
-  [/mar jana chahta hu/gi, "I want to die"],
-  [/life dena chahta hu/gi, "I want to give up my life"],
-  [/yaar bahut anxiety ho rahi hai/gi, "Bro, I am experiencing severe anxiety right now"],
-  [/yaar bohot zyada anxiety ho rahi hai/gi, "Bro, I am experiencing severe anxiety right now"],
-  [/kuch samajh nahi aa raha/gi, "I really can't figure anything out"],
-  [/mera dimag fat raha hai/gi, "My head feels like it's exploding from stress"],
-  [/bohot akelapan lag raha hai/gi, "I am feeling extremely isolated and lonely"],
-  [/bahut akelapan lag raha hai/gi, "I am feeling deeply lonely"],
-  [/main bohot akela feel kar raha hu/gi, "I am feeling very lonely today"],
-  [/exams ka bahut pressure hai/gi, "There is overwhelming pressure from exams"],
-  [/exam ka stress handle nahi ho raha/gi, "I can't handle the exam stress, feeling panicked"],
-  [/ghar wale samajhte nahi/gi, "My family doesn't understand what I am going through"],
-  [/kya karu kuch pata nahi/gi, "I don't know what to do at all"],
-  [/sab theek ho jayega dost/gi, "Everything will be okay, my friend"],
-  [/main tumhare sath hu/gi, "I am right here with you"],
-  [/tension mat lo/gi, "Please don't stress yourself"],
-  [/tum akele nahi ho/gi, "You are not alone in this"],
-  [/raat ko neend nahi aati/gi, "I can't fall asleep at night due to stress"],
-  [/heart beat bohot fast ho rahi hai/gi, "My heart is racing very fast"],
-  [/panic attack jaisa lag raha hai/gi, "It feels like a panic attack is coming on"],
-  [/himmat rakho/gi, "Stay strong, hold on"],
-  [/bohot rona aa raha hai/gi, "I feel like crying so much right now"],
+  [/दिल\s*की\s*धड़कन\s*बहुत\s*तेज\s*है/gi, "My heart is racing very fast from anxiety"],
+  [/बहुत\s*डर\s*लग\s*रहा\s*है/gi, "I am feeling very terrified and scared"],
+  [/panic attack jaisa lag raha hai/gi, "It feels like I am having a panic attack"],
+  [/yaar (bahut|bohot) (zyada\s*)?anxiety ho rahi hai/gi, "Friend, I am having severe anxiety right now"],
+  [/mera dimag fat raha hai/gi, "My head is throbbing from overwhelming stress"],
+  [/kuch samajh nahi aa raha/gi, "I can't seem to figure anything out"],
+  [/kya karu kuch samajh nahi aa raha/gi, "I don't know what to do at all, feeling lost"],
+  [/heart beat bohot fast ho rahi hai/gi, "My heart is racing very fast from anxiety"],
   [/saans lene me dikkat ho rahi hai/gi, "I am having trouble breathing calmly"],
+
+  // Loneliness & Isolation
+  [/मुझे\s*बहुत\s*(ज्यादा\s*)?अकेलापन\s*महसूस\s*हो\s*रहा\s*है/gi, "I am feeling deeply lonely and isolated"],
+  [/मैं\s*बहुत\s*अकेला\s*हूँ/gi, "I feel completely alone right now"],
+  [/कोई\s*मेरी\s*बात\s*नहीं\s*समझता/gi, "No one seems to understand what I am going through"],
+  [/कोई\s*मुझसे\s*प्यार\s*नहीं\s*करता/gi, "Nobody seems to care about me"],
+  [/kisi ko meri parwah nahi/gi, "Nobody seems to care about me"],
+  [/main bohot akela feel kar raha hu/gi, "I am feeling deeply lonely and isolated"],
+  [/mujhe bohot akelapan lag raha hai/gi, "I feel completely alone right now"],
+  [/koi meri baat nahi samajhta/gi, "Nobody seems to understand what I am going through"],
+
+  // Academic & Work Stress
+  [/पढ़ाई\s*का\s*बहुत\s*(ज्यादा\s*)?तनाव\s*है/gi, "There is immense pressure and stress from studies"],
+  [/परीक्षा\s*का\s*डर\s*सता\s*रहा\s*है/gi, "I am terrified about upcoming exams"],
+  [/exam(s)? ka (bahut|bohot) stress hai/gi, "There is immense stress from exams"],
+  [/exams ka pressure handle nahi ho raha/gi, "I can't handle the exam pressure anymore"],
+  [/ghar wale samajhte nahi/gi, "My family doesn't understand my situation"],
+
+  // Conversational & Empathy Greetings
+  [/नमस्ते\s*दोस्त\s*क्या\s*हाल\s*है/gi, "Hello friend, how are you doing?"],
+  [/नमस्ते\s*दोस्त/gi, "Hello friend"],
+  [/क्या\s*आप\s*मेरी\s*मदद\s*कर\s*सकते\s*हैं\??/gi, "Could you please help me?"],
+  [/क्या\s*आप\s*सुन\s*रहे\s*हैं\??/gi, "Are you listening to me?"],
+  [/मैं\s*आपके\s*साथ\s*हूँ/gi, "I am right here with you"],
+  [/चिंता\s*मत\s*करो/gi, "Please don't worry, everything will be fine"],
+  [/सब\s*ठीक\s*हो\s*जाएगा/gi, "Everything will turn out okay"],
+  [/आप\s*अकेले\s*नहीं\s*हैं/gi, "You are not alone in this journey"],
+  [/शुक्रिया\s*मेरी\s*बात\s*सुनने\s*के\s*लिए/gi, "Thank you so much for listening to me"],
   [/shukriya sunne ke liye/gi, "Thank you so much for listening to me"],
-  [/mujhe lagta hai koi meri baat nahi samajhta/gi, "I feel like nobody understands me"],
-  [/mujhe bohot darr lag raha hai/gi, "I am feeling so scared"],
-  [/kisi ko meri parwah nahi/gi, "No one seems to care about me"],
-  [/tumhe kaisa lag raha hai/gi, "How are you feeling right now?"],
-  [/sab accha hoga/gi, "Everything will turn out well"],
+  [/main tumhare sath hu/gi, "I am right here with you"],
+  [/tension mat lo dost/gi, "Please don't stress yourself, my friend"],
+  [/tum akele nahi ho/gi, "You are not alone in this"],
+  [/sab theek ho jayega/gi, "Everything will turn out okay"],
+  [/kaise ho dost/gi, "How are you doing, friend?"],
+  [/dimag me kya chal raha hai/gi, "What is going on in your mind?"],
 ];
 
-// ── 3. Tamil Patterns ➡️ English ──
-const TAMIL_MAP: Array<[RegExp, string]> = [
-  [/எனக்கு மிகவும் மன அழுத்தம் இருக்கிறது/gi, "I am experiencing severe mental stress and overwhelm"],
-  [/யாராவது என்னுடன் பேச முடியுமா\??/gi, "Can someone please talk with me?"],
-  [/தேர்வு பயம் அதிகமாக உள்ளது/gi, "Exam fear and academic stress is overwhelming"],
-  [/நான் மிகவும் தனிமையாக உணர்கிறேன்/gi, "I am feeling deeply lonely and isolated"],
-  [/சாக வேண்டும்/gi, "I want to die"],
-  [/தற்கொலை/gi, "Suicide"],
-];
-
-// ── 4. Telugu Patterns ➡️ English ──
-const TELUGU_MAP: Array<[RegExp, string]> = [
-  [/నాకు చాలా ఒత్తిడిగా ఉంది/gi, "I am experiencing extreme stress and panic"],
-  [/ఎవరైనా నాతో మాట్లాడగలరా\??/gi, "Can someone please speak with me?"],
-  [/పరీక్షల భయం ఎక్కువగా ఉంది/gi, "Exam anxiety is very high right now"],
-  [/నేను చాలా ఒంటరిగా భావిస్తున్నాను/gi, "I am feeling deeply isolated and lonely"],
-  [/చనిపోవాలని ఉంది/gi, "I want to die"],
-  [/ఆత్మహత్య/gi, "Suicide"],
-];
-
-// ── 5. English ➡️ Hinglish/Hindi ──
-const ENGLISH_TO_HINGLISH: Array<[RegExp, string]> = [
-  [/I feel so alone/gi, "Mujhe bohot akela lag raha hai"],
+// ── 2. English ➡️ Hindi / Hinglish Sentence Patterns ──
+const ENGLISH_TO_HINDI_PHRASES: Array<[RegExp, string]> = [
+  [/Hello friend\.?\s*I'?m here to listen\.?\s*What'?s (been )?on your mind\??/gi, "Namaste dost. Main yaha aapki baat sunne ke liye hu. Dimag me kya chal raha hai?"],
+  [/Hello friend/gi, "Namaste dost"],
+  [/I feel so alone/gi, "Mujhe bohot akelapan mehsus ho raha hai"],
+  [/I am feeling really anxious/gi, "Mujhe bohot zyada anxiety aur ghabrahat ho rahi hai"],
   [/I am having anxiety/gi, "Mujhe anxiety ho rahi hai"],
-  [/I am here for you/gi, "Main tumhare sath hu"],
-  [/Don't worry/gi, "Tension mat lo, sab theek hoga"],
+  [/I am here for you/gi, "Main tumhare sath hu dost"],
+  [/I want to die/gi, "Main marna chahta hu"],
+  [/I want to give up my life/gi, "Main apni life dena chahta hu"],
+  [/Don'?t worry, everything will be okay/gi, "Tension mat lo dost, sab theek ho jayega"],
+  [/Don'?t worry/gi, "Chinta mat karo, sab theek hoga"],
+  [/Take a slow deep breath/gi, "Ek gehri saans lo aur relax karo"],
   [/Take a deep breath/gi, "Ek gehri saans lo"],
-  [/Thank you for listening/gi, "Shukriya sunne ke liye dost"],
-  [/Hello friend\.? I'm here to listen/gi, "Namaste dost. Main yaha sunne ke liye hu"],
+  [/Thank you for listening/gi, "Meri baat sunne ke liye bohot shukriya"],
+  [/You are not alone/gi, "Tum akele bilkul nahi ho"],
+  [/How are you feeling right now\??/gi, "Abhi aap kaisa mehsus kar rahe ho?"],
+  [/Can someone please talk to me\??/gi, "Kya koi mujhse baat kar sakta hai?"],
+  [/I am overwhelmed/gi, "Main bohot pareshan aur thak chuka hu"],
 ];
+
+// ── 3. Comprehensive Dictionary for Word-by-Word SVO Reconstruction ──
+const INDIC_LEXICON: Record<string, string> = {
+  // Pronouns
+  मैं: "I", main: "I", mujhe: "me", mera: "my", meri: "my", mere: "my",
+  हम: "we", hum: "we", hume: "us", hamara: "our",
+  तुम: "you", tum: "you", tumhe: "you", tumhara: "your",
+  आप: "you", aap: "you", aapko: "you", aapka: "your",
+  वह: "he/she", vo: "they", usko: "them", unka: "their",
+
+  // Nouns & Entities
+  दोस्त: "friend", dost: "friend", yaar: "friend", bhai: "brother",
+  लाइफ: "life", life: "life", जिंदगी: "life", zindagi: "life", jaan: "life", जान: "life",
+  दिमाग: "mind", dimag: "mind", man: "mind", mann: "mind", मन: "mind",
+  बात: "words", baat: "words", baatein: "thoughts",
+  मदद: "help", madad: "help", help: "help",
+  तनाव: "stress", stress: "stress", pressure: "pressure",
+  घबराहट: "anxiety", anxiety: "anxiety", panic: "panic",
+  अकेलापन: "loneliness", akelapan: "loneliness", loneliness: "loneliness",
+  डर: "fear", darr: "fear", fear: "fear",
+  परीक्षा: "exam", exam: "exam", exams: "exams", padhai: "studies", पढ़ाई: "studies",
+  घर: "home", ghar: "family", family: "family",
+
+  // Verbs & Actions
+  मरना: "to die", marna: "die", die: "die",
+  देना: "give", dena: "give", give: "give",
+  लेना: "take", lena: "take", take: "take",
+  चाहता: "want", chahta: "want", chahti: "want", want: "want",
+  सुनना: "listen", sunna: "listen", suno: "listen",
+  समझना: "understand", samajhna: "understand", samajh: "understand",
+  रोना: "cry", rona: "crying",
+  रहना: "stay", rehna: "stay",
+  होना: "happen", hona: "happen",
+
+  // Modifiers & Adjectives
+  बहुत: "very", bahut: "very", bohot: "really", zyada: "much",
+  अकेला: "alone", akela: "alone", alone: "alone",
+  परेशान: "troubled", pareshan: "troubled",
+  ठीक: "alright", theek: "okay", accha: "good",
+  नहीं: "not", nahi: "not", na: "not", mat: "do not",
+  आज: "today", aaj: "today", raat: "night", kal: "tomorrow",
+
+  // Auxiliaries
+  हूँ: "", hu: "", hoon: "",
+  है: "is", hai: "is", hain: "are", हैं: "",
+  हो: "", ho: "",
+  था: "was", tha: "was", thi: "was",
+  रहा: "", raha: "", rahi: "", rahe: "",
+  सकते: "can", sakte: "can", sakta: "can",
+};
 
 export function translateColloquial(
   text: string,
@@ -151,9 +154,10 @@ export function translateColloquial(
   targetLang: Language
 ): TranslationResult {
   const start = performance.now();
-  const lower = text.toLowerCase().trim();
+  const trimmed = text.trim();
+  const lower = trimmed.toLowerCase();
 
-  // Emotion Detection
+  // Emotion & Valence Detection
   let detectedEmotion = "Reflective / Neutral";
   let valence: "Positive-Healing" | "Negative-Distress" | "Neutral" = "Neutral";
 
@@ -164,11 +168,9 @@ export function translateColloquial(
     lower.includes("dar") ||
     lower.includes("pressure") ||
     lower.includes("fat raha") ||
-    text.includes("तनाव") ||
-    text.includes("घबराहट") ||
-    text.includes("डर") ||
-    text.includes("ஒத்திடி") ||
-    text.includes("பயம்")
+    trimmed.includes("तनाव") ||
+    trimmed.includes("घबराहट") ||
+    trimmed.includes("डर")
   ) {
     detectedEmotion = "Overwhelmed / Anxious";
     valence = "Negative-Distress";
@@ -177,9 +179,8 @@ export function translateColloquial(
     lower.includes("akelapan") ||
     lower.includes("lonely") ||
     lower.includes("isolated") ||
-    text.includes("अकेला") ||
-    text.includes("தனிமை") ||
-    text.includes("ఒంటరి")
+    trimmed.includes("अकेला") ||
+    trimmed.includes("अकेलापन")
   ) {
     detectedEmotion = "Lonely / Isolated";
     valence = "Negative-Distress";
@@ -187,11 +188,9 @@ export function translateColloquial(
     lower.includes("marna") ||
     lower.includes("suicide") ||
     lower.includes("die") ||
-    text.includes("मरना") ||
-    text.includes("जान देना") ||
-    text.includes("आत्महत्या") ||
-    text.includes("தற்கொலை") ||
-    text.includes("చనిపోవాలని")
+    trimmed.includes("मरना") ||
+    trimmed.includes("जान देना") ||
+    trimmed.includes("आत्महत्या")
   ) {
     detectedEmotion = "Acute Crisis / Critical";
     valence = "Negative-Distress";
@@ -201,8 +200,8 @@ export function translateColloquial(
     lower.includes("sad") ||
     lower.includes("dard") ||
     lower.includes("dukhi") ||
-    text.includes("उदास") ||
-    text.includes("दर्द")
+    trimmed.includes("उदास") ||
+    trimmed.includes("दर्द")
   ) {
     detectedEmotion = "Sadness / Vulnerable";
     valence = "Negative-Distress";
@@ -214,62 +213,66 @@ export function translateColloquial(
     lower.includes("proud") ||
     lower.includes("shukriya") ||
     lower.includes("calm") ||
-    text.includes("साथ") ||
-    text.includes("ठीक")
+    trimmed.includes("साथ") ||
+    trimmed.includes("ठीक")
   ) {
     detectedEmotion = "Supportive / Empathetic";
     valence = "Positive-Healing";
   }
 
-  let translated = text;
+  let translated = trimmed;
 
-  // Translation to English
+  // ── Scenario A: Translating to Pure English ──
   if (targetLang === "English") {
-    // 1. Devanagari Hindi rules
-    for (const [regex, rep] of HINDI_DEVANAGARI_MAP) {
-      if (typeof regex === "string") {
-        if (translated.includes(regex)) {
-          translated = translated.split(regex).join(rep);
+    // Step 1: Match high-confidence sentence idioms
+    let matched = false;
+    for (const [regex, rep] of HINDI_TO_ENGLISH_PHRASES) {
+      if (regex.test(translated)) {
+        translated = translated.replace(regex, rep);
+        matched = true;
+      }
+    }
+
+    // Step 2: If still unchanged or contains untranslated Indic words, apply Lexicon Translation & Grammar Cleanup
+    if (!matched || /[^\x00-\x7F]/.test(translated) || /(main|mera|meri|chahta|hai|hu|dena|kuch|nahi|yaar|dost)/i.test(translated)) {
+      const words = translated.split(/\s+/);
+      const translatedWords = words.map((rawWord) => {
+        const punctuation = rawWord.match(/[.,!?।]/g)?.join("") || "";
+        const clean = rawWord.replace(/[.,!?।]/g, "").toLowerCase();
+        const devanagariClean = rawWord.replace(/[.,!?।]/g, "");
+
+        if (INDIC_LEXICON[devanagariClean]) {
+          return INDIC_LEXICON[devanagariClean] + punctuation;
         }
-      } else if (regex.test(translated)) {
-        translated = translated.replace(regex, rep);
-      }
-    }
-
-    // 2. Tamil rules
-    for (const [regex, rep] of TAMIL_MAP) {
-      if (regex.test(translated)) {
-        translated = translated.replace(regex, rep);
-      }
-    }
-
-    // 3. Telugu rules
-    for (const [regex, rep] of TELUGU_MAP) {
-      if (regex.test(translated)) {
-        translated = translated.replace(regex, rep);
-      }
-    }
-
-    // 4. Hinglish Romanized rules
-    for (const [regex, rep] of HINGLISH_PATTERNS) {
-      if (regex.test(translated)) {
-        translated = translated.replace(regex, rep);
-      }
-    }
-
-    // 5. Fallback word-level dictionary for untranslated Devanagari words
-    if (translated === text) {
-      const words = text.split(/\s+/);
-      const replaced = words.map((w) => {
-        const clean = w.replace(/[।.,?!]/g, "").trim();
-        return HINDI_WORD_MAP[clean] ? HINDI_WORD_MAP[clean] : w;
+        if (INDIC_LEXICON[clean]) {
+          return INDIC_LEXICON[clean] + punctuation;
+        }
+        return rawWord;
       });
-      if (replaced.join(" ") !== text) {
-        translated = replaced.join(" ");
+
+      const assembled = translatedWords.filter((w) => w.trim() !== "").join(" ").trim();
+      if (assembled && assembled !== trimmed) {
+        translated = assembled;
       }
     }
-  } else if (sourceLang === "English" && (targetLang === "Hinglish" || targetLang === "Hindi")) {
-    for (const [regex, rep] of ENGLISH_TO_HINGLISH) {
+
+    // Clean up trailing double spaces or grammar artifacts
+    translated = translated
+      .replace(/\s+/g, " ")
+      .replace(/\bi want to give my life\b/gi, "I want to give up my life")
+      .replace(/\bi want to die my life\b/gi, "I want to end my life")
+      .replace(/\bi want die\b/gi, "I want to die")
+      .trim();
+
+    // Capitalize first letter
+    if (translated.length > 0) {
+      translated = translated.charAt(0).toUpperCase() + translated.slice(1);
+    }
+  }
+
+  // ── Scenario B: Translating from English to Hindi / Hinglish ──
+  else if (sourceLang === "English" && (targetLang === "Hinglish" || targetLang === "Hindi")) {
+    for (const [regex, rep] of ENGLISH_TO_HINDI_PHRASES) {
       if (regex.test(translated)) {
         translated = translated.replace(regex, rep);
       }
@@ -280,7 +283,7 @@ export function translateColloquial(
 
   return {
     translatedText: translated,
-    originalText: text,
+    originalText: trimmed,
     sourceLang,
     targetLang,
     detectedEmotion,
