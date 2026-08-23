@@ -1,36 +1,38 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Mic, MicOff, Volume2, Sparkles, AlertCircle, Radio } from "lucide-react";
+import { Mic, MicOff, Volume2, Sparkles, AlertCircle, Radio, Send, Play } from "lucide-react";
 import { Language } from "@/lib/types";
 
 interface VoiceInputButtonProps {
   language: Language;
   onTranscript: (text: string) => void;
+  onSendDirectly?: (text: string) => void;
   disabled?: boolean;
 }
 
 const SAMPLE_VOICE_PHRASES: Record<Language, string[]> = {
   Hinglish: [
-    "Yaar bohot zyada anxiety ho rahi hai",
-    "Exam ka stress handle nahi ho raha",
-    "Main bohot akela feel kar raha hu",
+    "Yaar bohot zyada anxiety ho rahi hai, kuch samajh nahi aa raha",
+    "Exam ka stress handle nahi ho raha, bohot panic ho raha hai",
+    "Main bohot akela feel kar raha hu aaj",
     "Mujhe lagta hai koi meri baat nahi samajhta",
+    "I feel like ending my life, no reason to live", // Crisis Breaker Test
   ],
   Hindi: [
-    "मुझे बहुत अकेलापन महसूस हो रहा है",
-    "पढ़ाई का बहुत ज्यादा तनाव है",
+    "मुझे बहुत अकेलापन महसूस हो रहा है, कृपया मदद करें",
+    "पढ़ाई का बहुत ज्यादा तनाव है और बहुत घबराहट हो रही है",
     "क्या आप मेरी बात सुन सकते हैं?",
-    "मन बहुत परेशान है आज",
+    "मन बहुत परेशान और उदास है आज",
   ],
   Tamil: [
-    "எனக்கு மிகவும் மன அழுத்தம் இருக்கிறது",
+    "எனக்கு மிகவும் மன அழுத்தம் இருக்கிறது, என்னால் தாங்க முடியவில்லை",
     "யாராவது என்னுடன் பேச முடியுமா?",
     "தேர்வு பயம் அதிகமாக உள்ளது",
     "நான் மிகவும் தனிமையாக உணர்கிறேன்",
   ],
   Telugu: [
-    "నాకు చాలా ఒత్తిడిగా ఉంది",
+    "నాకు చాలా ఒత్తిడిగా ఉంది, భయం వేస్తుంది",
     "ఎవరైనా నాతో మాట్లాడగలరా?",
     "పరీక్షల భయం ఎక్కువగా ఉంది",
     "నేను చాలా ఒంటరిగా భావిస్తున్నాను",
@@ -46,6 +48,7 @@ const SAMPLE_VOICE_PHRASES: Record<Language, string[]> = {
 export const VoiceInputButton: React.FC<VoiceInputButtonProps> = ({
   language,
   onTranscript,
+  onSendDirectly,
   disabled = false,
 }) => {
   const [isRecording, setIsRecording] = useState(false);
@@ -85,13 +88,12 @@ export const VoiceInputButton: React.FC<VoiceInputButtonProps> = ({
       (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-      setErrorMsg("Browser Speech API not supported. Use quick voice samples below.");
+      setErrorMsg("Browser Speech API not available. Use quick voice triggers below.");
       setShowSimMenu(true);
       return;
     }
 
     try {
-      // Request mic permission first to ensure browser doesn't block silently
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         try {
           await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -106,8 +108,6 @@ export const VoiceInputButton: React.FC<VoiceInputButtonProps> = ({
       recognition.lang = getLangCode(language);
       recognition.maxAlternatives = 1;
 
-      let finalResultReceived = false;
-
       recognition.onstart = () => {
         setIsRecording(true);
         setErrorMsg(null);
@@ -119,7 +119,6 @@ export const VoiceInputButton: React.FC<VoiceInputButtonProps> = ({
         for (let i = event.resultIndex; i < event.results.length; ++i) {
           const trans = event.results[i][0].transcript;
           if (event.results[i].isFinal) {
-            finalResultReceived = true;
             onTranscript(trans.trim());
             setInterimText("");
           } else {
@@ -128,18 +127,17 @@ export const VoiceInputButton: React.FC<VoiceInputButtonProps> = ({
         }
         if (currentInterim) {
           setInterimText(currentInterim);
+          onTranscript(currentInterim);
         }
       };
 
       recognition.onerror = (event: any) => {
-        console.warn("Speech recognition event error:", event.error);
+        console.warn("Speech recognition error:", event.error);
         if (event.error === "not-allowed" || event.error === "service-not-allowed") {
-          setErrorMsg("Mic permission denied. Use quick voice samples below.");
+          setErrorMsg("Microphone permission denied. Use one-tap spoken samples below.");
           setShowSimMenu(true);
-        } else if (event.error === "no-speech") {
-          // Keep listening or gently stop
         } else if (event.error === "network") {
-          setErrorMsg("Speech recognition network offline. Use quick voice samples.");
+          setErrorMsg("Speech recognition offline. Use one-tap spoken samples below.");
           setShowSimMenu(true);
         }
         setIsRecording(false);
@@ -176,8 +174,12 @@ export const VoiceInputButton: React.FC<VoiceInputButtonProps> = ({
     startBrowserRecognition();
   };
 
-  const handleSelectSample = (sample: string) => {
-    onTranscript(sample);
+  const handleSendDirectly = (sample: string) => {
+    if (onSendDirectly) {
+      onSendDirectly(sample);
+    } else {
+      onTranscript(sample);
+    }
     setShowSimMenu(false);
   };
 
@@ -188,7 +190,7 @@ export const VoiceInputButton: React.FC<VoiceInputButtonProps> = ({
         type="button"
         onClick={toggleRecording}
         disabled={disabled}
-        title={isRecording ? "Listening... (Click to stop)" : `Speak in ${language} or click for voice options`}
+        title={isRecording ? "Listening... (Click to stop)" : `Speak in ${language} or click for voice triggers`}
         className={`p-2.5 rounded-xl border transition-all cursor-pointer flex items-center justify-center relative ${
           isRecording
             ? "bg-red-500/25 border-red-500 text-red-400 animate-pulse ring-2 ring-red-400/50 shadow-lg shadow-red-500/20"
@@ -210,10 +212,10 @@ export const VoiceInputButton: React.FC<VoiceInputButtonProps> = ({
       <button
         type="button"
         onClick={() => setShowSimMenu(!showSimMenu)}
-        title="Quick Vernacular Voice Samples"
+        title="Spoken Voice Triggers & Samples"
         className="ml-1 p-1 rounded-lg text-slate-400 hover:text-emerald-400 hover:bg-slate-800/60 transition-all text-[10px] font-mono flex items-center gap-0.5 cursor-pointer"
       >
-        <Sparkles className="w-3 h-3 text-amber-300" />
+        <Sparkles className="w-3.5 h-3.5 text-amber-300" />
       </button>
 
       {/* Listening Floating Toast */}
@@ -225,7 +227,7 @@ export const VoiceInputButton: React.FC<VoiceInputButtonProps> = ({
               <span>Listening in {language}...</span>
             </div>
             <div className="text-[10px] text-slate-400 italic truncate max-w-[180px]">
-              {interimText || "Speak now..."}
+              {interimText || "Speak now into mic..."}
             </div>
           </div>
         </div>
@@ -233,38 +235,56 @@ export const VoiceInputButton: React.FC<VoiceInputButtonProps> = ({
 
       {/* Quick Vernacular Speech Menu Modal */}
       {showSimMenu && (
-        <div className="absolute bottom-12 left-0 z-50 w-72 p-3 rounded-2xl bg-slate-950/95 border border-emerald-500/30 shadow-2xl backdrop-blur-2xl text-left space-y-2 animate-in fade-in zoom-in-95">
+        <div className="absolute bottom-12 left-0 z-50 w-80 p-3.5 rounded-2xl bg-[#0c131d]/98 border border-emerald-500/40 shadow-2xl backdrop-blur-2xl text-left space-y-2.5 animate-in fade-in zoom-in-95">
           <div className="flex items-center justify-between border-b border-white/10 pb-2">
-            <span className="text-[11px] font-bold text-white flex items-center gap-1.5">
-              <Volume2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Spoken {language} Samples</span>
+            <span className="text-xs font-bold text-white flex items-center gap-1.5 font-serif">
+              <Volume2 className="w-4 h-4 text-emerald-400" />
+              <span>Voice Speech Triggers ({language})</span>
             </span>
             <button
               onClick={() => setShowSimMenu(false)}
-              className="text-[10px] text-slate-400 hover:text-white px-1.5 py-0.5 rounded bg-slate-800"
+              className="text-[10px] text-slate-400 hover:text-white px-2 py-0.5 rounded bg-slate-800"
             >
               ✕
             </button>
           </div>
 
           {errorMsg && (
-            <div className="text-[10px] text-amber-300 bg-amber-500/10 p-1.5 rounded-lg border border-amber-500/20">
+            <div className="text-[10px] text-amber-300 bg-amber-500/10 p-2 rounded-lg border border-amber-500/20">
               {errorMsg}
             </div>
           )}
 
-          <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+          <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
             {(SAMPLE_VOICE_PHRASES[language] || SAMPLE_VOICE_PHRASES.English).map((phrase, idx) => (
-              <button
+              <div
                 key={idx}
-                onClick={() => handleSelectSample(phrase)}
-                className="w-full text-left p-2 rounded-xl bg-slate-900/90 hover:bg-emerald-950/50 hover:border-emerald-500/40 border border-white/5 text-[11px] text-slate-200 hover:text-white transition-all cursor-pointer flex items-center justify-between group"
+                className="p-2.5 rounded-xl bg-slate-900/90 border border-white/5 hover:border-emerald-500/40 transition-all flex items-center justify-between gap-2 group"
               >
-                <span className="truncate pr-2">"{phrase}"</span>
-                <span className="text-[9px] text-emerald-400 font-mono opacity-0 group-hover:opacity-100">
-                  Insert
+                <span className="text-xs text-slate-200 truncate flex-1">
+                  "{phrase}"
                 </span>
-              </button>
+                <div className="flex items-center gap-1 shrink-0">
+                  <button
+                    onClick={() => {
+                      onTranscript(phrase);
+                      setShowSimMenu(false);
+                    }}
+                    title="Insert text into input box"
+                    className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 hover:text-white font-medium"
+                  >
+                    Insert
+                  </button>
+                  <button
+                    onClick={() => handleSendDirectly(phrase)}
+                    title="Send directly to peer with translation & safety check"
+                    className="px-2 py-1 rounded bg-emerald-500 hover:bg-emerald-400 text-[10px] text-slate-950 font-bold flex items-center gap-1 shadow-sm cursor-pointer"
+                  >
+                    <Send className="w-2.5 h-2.5" />
+                    <span>Send</span>
+                  </button>
+                </div>
+              </div>
             ))}
           </div>
         </div>

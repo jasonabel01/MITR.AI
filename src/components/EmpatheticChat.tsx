@@ -349,7 +349,10 @@ export const EmpatheticChat: React.FC<EmpatheticChatProps> = ({
         <VoiceInputButton
           language={selfLang}
           onTranscript={(spokenText) => {
-            setInputText((prev) => (prev ? `${prev} ${spokenText}` : spokenText));
+            setInputText(spokenText);
+          }}
+          onSendDirectly={(spokenText) => {
+            handleSendMessage(spokenText);
           }}
         />
 

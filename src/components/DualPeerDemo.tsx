@@ -224,7 +224,8 @@ export const DualPeerDemo: React.FC<DualPeerDemoProps> = ({
           <div className="pt-3 border-t border-white/10 flex items-center gap-2">
             <VoiceInputButton
               language={peer1Lang}
-              onTranscript={(txt) => setPeer1Input((p) => (p ? `${p} ${txt}` : txt))}
+              onTranscript={(txt) => setPeer1Input(txt)}
+              onSendDirectly={(txt) => sendMessageFromPeer("peer1", txt)}
             />
             <input
               type="text"
@@ -308,7 +309,8 @@ export const DualPeerDemo: React.FC<DualPeerDemoProps> = ({
           <div className="pt-3 border-t border-white/10 flex items-center gap-2">
             <VoiceInputButton
               language={peer2Lang}
-              onTranscript={(txt) => setPeer2Input((p) => (p ? `${p} ${txt}` : txt))}
+              onTranscript={(txt) => setPeer2Input(txt)}
+              onSendDirectly={(txt) => sendMessageFromPeer("peer2", txt)}
             />
             <input
               type="text"
