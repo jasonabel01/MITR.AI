@@ -226,13 +226,13 @@ export const ProductLanding: React.FC<ProductLandingProps> = ({
         <section id="features" className="relative z-10 py-24 px-6 md:px-16">
           <div className="max-w-6xl mx-auto space-y-16">
             <div className="space-y-4 text-center md:text-left">
-              <span className="text-xs uppercase tracking-widest text-[#a3b18a] font-serif font-bold bg-[#1b2e22]/80 border border-[#47624f]/50 px-4 py-1.5 rounded-full inline-block backdrop-blur-md shadow-sm">
+              <span className="text-xs uppercase tracking-widest text-[#E8DCC8] font-serif font-bold bg-[#1b2e22]/90 border border-[#84a98c]/40 px-4 py-1.5 rounded-full inline-block backdrop-blur-md shadow-sm">
                 Engineering Pillars
               </span>
-              <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-[#faf7f2] drop-shadow-md font-serif">
+              <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-[#F5EFEB] drop-shadow-md font-serif">
                 Zero-Trace Privacy & In-Stream AI Guardrails
               </h2>
-              <p className="text-[#c2d1bd] max-w-2xl text-base md:text-lg leading-relaxed">
+              <p className="text-[#E2D9CC] max-w-2xl text-base md:text-lg leading-relaxed font-sans">
                 Engineered from the ground up for high emotional safety, zero persistent storage, and sub-2ms deterministic crisis prevention.
               </p>
             </div>
@@ -244,20 +244,20 @@ export const ProductLanding: React.FC<ProductLandingProps> = ({
                   <div className="w-13 h-13 rounded-2xl bg-[#1c3325] border border-[#3b6d4e]/60 flex items-center justify-center text-[#84cc9c] group-hover:scale-110 transition-transform shadow-md">
                     <Zap className="w-6 h-6" />
                   </div>
-                  <div className="text-xs font-serif text-[#84cc9c] uppercase font-bold tracking-wider">
+                  <div className="text-xs font-serif text-[#E8DCC8] uppercase font-bold tracking-wider">
                     Sub-2ms Deterministic Filter
                   </div>
-                  <h3 className="text-xl font-serif font-bold text-[#faf7f2] group-hover:text-[#a3b18a] transition-colors">
+                  <h3 className="text-xl font-serif font-bold text-[#F5EFEB] group-hover:text-[#E8DCC8] transition-colors">
                     Aho-Corasick Crisis Breaker
                   </h3>
-                  <p className="text-[#b5c7b0] text-sm leading-relaxed">
+                  <p className="text-[#DDD3C1] text-sm leading-relaxed font-sans">
                     Scans self-harm and suicidal ideation across English and Indic transliterations in sub-2ms. Immediately halts transmission to peer and presents one-tap emergency helpline cards.
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#8fa88a]">
+                <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#C5BBAA]">
                   <span>Latency: &lt; 2ms</span>
-                  <span className="text-[#84cc9c] font-mono font-semibold">Deterministic Trie</span>
+                  <span className="text-[#E8DCC8] font-mono font-semibold">Deterministic Trie</span>
                 </div>
               </div>
 
@@ -267,20 +267,20 @@ export const ProductLanding: React.FC<ProductLandingProps> = ({
                   <div className="w-13 h-13 rounded-2xl bg-[#162e2c] border border-[#2f635f]/60 flex items-center justify-center text-[#73c7be] group-hover:scale-110 transition-transform shadow-md">
                     <Globe className="w-6 h-6" />
                   </div>
-                  <div className="text-xs font-serif text-[#73c7be] uppercase font-bold tracking-wider">
+                  <div className="text-xs font-serif text-[#E8DCC8] uppercase font-bold tracking-wider">
                     Indic Colloquial NLP
                   </div>
-                  <h3 className="text-xl font-serif font-bold text-[#faf7f2] group-hover:text-[#a5ded7] transition-colors">
+                  <h3 className="text-xl font-serif font-bold text-[#F5EFEB] group-hover:text-[#E8DCC8] transition-colors">
                     Emotion-Preserving Translation
                   </h3>
-                  <p className="text-[#b5c7b0] text-sm leading-relaxed">
+                  <p className="text-[#DDD3C1] text-sm leading-relaxed font-sans">
                     Translates code-mixed Hinglish and colloquial Indic phrasing while preserving the original emotional nuance, vulnerability, and valence without clinical distortion.
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#8fa88a]">
+                <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#C5BBAA]">
                   <span>Dialects: Hinglish, Hindi, Ta, Te</span>
-                  <span className="text-[#73c7be] font-mono font-semibold">Dual-Bubble Stream</span>
+                  <span className="text-[#E8DCC8] font-mono font-semibold">Dual-Bubble Stream</span>
                 </div>
               </div>
 
@@ -290,20 +290,20 @@ export const ProductLanding: React.FC<ProductLandingProps> = ({
                   <div className="w-13 h-13 rounded-2xl bg-[#2d2218] border border-[#6b4728]/60 flex items-center justify-center text-[#e09f67] group-hover:scale-110 transition-transform shadow-md">
                     <Flame className="w-6 h-6" />
                   </div>
-                  <div className="text-xs font-serif text-[#e09f67] uppercase font-bold tracking-wider">
+                  <div className="text-xs font-serif text-[#E8DCC8] uppercase font-bold tracking-wider">
                     Zero Persistent Storage
                   </div>
-                  <h3 className="text-xl font-serif font-bold text-[#faf7f2] group-hover:text-[#f2c49b] transition-colors">
+                  <h3 className="text-xl font-serif font-bold text-[#F5EFEB] group-hover:text-[#E8DCC8] transition-colors">
                     Ephemeral RAM Session Burn
                   </h3>
-                  <p className="text-[#b5c7b0] text-sm leading-relaxed">
+                  <p className="text-[#DDD3C1] text-sm leading-relaxed font-sans">
                     Zero database writes. All message packets stream exclusively through ephemeral in-memory circular buffers. Upon room exit, all memory is permanently dissolved.
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#8fa88a]">
+                <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#C5BBAA]">
                   <span>Disk Persistence: 0 Bytes</span>
-                  <span className="text-[#e09f67] font-mono font-semibold">Memory Dissolved</span>
+                  <span className="text-[#E8DCC8] font-mono font-semibold">Memory Dissolved</span>
                 </div>
               </div>
             </div>
