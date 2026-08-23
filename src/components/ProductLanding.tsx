@@ -206,18 +206,16 @@ export const ProductLanding: React.FC<ProductLandingProps> = ({
 
       {/* ── 3. Safety Architecture, Helplines & Footer with Continuous Dynamic Background ── */}
       <div className="relative z-40 overflow-hidden border-t border-white/10">
-        {/* Dynamic Looping Background Layer (GIF / Video) */}
+        {/* Full-Bleed Pixel Art Artwork Background Layer */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover object-center opacity-25 filter blur-[1px] scale-105"
-            src="https://res.cloudinary.com/dsuwzuaxp/video/upload/video1_horxtt.mp4"
+          <img
+            src="/features-bg.jpg"
+            alt="Late Night Pixel Art Room"
+            className="w-full h-full object-cover object-center scale-105 filter brightness-[0.7] contrast-[1.1]"
           />
-          {/* Deep dark gradient overlays for maximum contrast & rich glassmorphism */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0B0F19] via-[#070a12]/90 to-[#05070c]" />
+          {/* Deep dark gradient overlays for rich contrast & readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0B0F19] via-[#070a12]/80 to-[#05070c]" />
+          <div className="absolute inset-0 bg-[#070a12]/40 backdrop-blur-[2px]" />
           <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[140px] pointer-events-none" />
           <div className="absolute bottom-1/3 left-1/4 w-[600px] h-[600px] bg-teal-500/10 rounded-full blur-[150px] pointer-events-none" />
         </div>
