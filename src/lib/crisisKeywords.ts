@@ -47,9 +47,13 @@ export const CRISIS_KEYWORDS = [
   "kill me",
   "self harm",
   "self-harm",
-  // Hinglish / Hindi
+
+  // Romanized Hinglish
   "mar jaana chahta hoon",
   "mar jana chahta hu",
+  "marna chahta",
+  "marna chahta hu",
+  "marna chahta hoon",
   "marne ka mann kar raha",
   "marne ka man kar raha",
   "apni jaan lena",
@@ -66,6 +70,38 @@ export const CRISIS_KEYWORDS = [
   "zeher kha lunga",
   "mar jana hai",
   "mar jau",
+  "life dena chahta",
+
+  // Hindi (Devanagari Script)
+  "मरना चाहता",
+  "मरना चाहता हूँ",
+  "मरना चाहता हूं",
+  "आत्महत्या",
+  "खुदकुशी",
+  "जान देना चाहता",
+  "जान दे दूंगा",
+  "जान ले लूंगा",
+  "अपनी जान",
+  "फांसी लगा",
+  "ज़हर खा",
+  "जीने का मन नहीं",
+  "मर जाना है",
+  "लाइफ देना चाहता",
+
+  // Tamil Script & Transliterations
+  "தற்கொலை",
+  "சாக வேண்டும்",
+  "உயிரை விட",
+  "சாக போறேன்",
+  "tharkolai",
+  "saaga vendum",
+
+  // Telugu Script & Transliterations
+  "ఆత్మహత్య",
+  "చనిపోవాలని ఉంది",
+  "ప్రాణం తీసుకోవడం",
+  "aathma hathya",
+  "chanipovalani undi",
 ];
 
 const REGEX_PATTERNS = [
@@ -73,7 +109,8 @@ const REGEX_PATTERNS = [
   /\b(better\s+off|rather\s+be)\s+dead\b/i,
   /\b(take|end)\s+my\s+own\s+life\b/i,
   /\b(no\s+point|no\s+reason)\s+in\s+living\b/i,
-  /\b(mar\s+jana|khud\s*kushi|jaan\s+de\s*du)\b/i,
+  /\b(mar\s*na|mar\s*jana|khud\s*kushi|jaan\s+de\s*du)\b/i,
+  /(मरना|आत्महत्या|खुदकुशी|जान देना|தற்கொலை|ఆత్మహత్య)/i,
 ];
 
 export function checkCrisis(text: string): CrisisAlert {
@@ -85,7 +122,7 @@ export function checkCrisis(text: string): CrisisAlert {
 
   // Keyword check
   for (const phrase of CRISIS_KEYWORDS) {
-    if (lower.includes(phrase)) {
+    if (text.includes(phrase) || lower.includes(phrase.toLowerCase())) {
       return {
         isCrisis: true,
         detectedPhrase: phrase,
@@ -98,7 +135,7 @@ export function checkCrisis(text: string): CrisisAlert {
 
   // Regex check
   for (const reg of REGEX_PATTERNS) {
-    const match = lower.match(reg);
+    const match = text.match(reg);
     if (match) {
       return {
         isCrisis: true,
