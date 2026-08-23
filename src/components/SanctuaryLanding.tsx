@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
-import { Shield, Sparkles, RefreshCw, Globe, HeartHandshake, EyeOff, Activity, Users, ArrowRight, MonitorPlay } from "lucide-react";
+import React from "react";
+import { Sparkles, RefreshCw, Compass, Ticket, BookOpen, Train, ShieldCheck, HeartHandshake, Feather } from "lucide-react";
 import { Language, IntentTag } from "@/lib/types";
-import { generateAnonymousAlias } from "@/lib/utils";
 
 interface SanctuaryLandingProps {
   alias: string;
@@ -17,22 +16,22 @@ interface SanctuaryLandingProps {
 }
 
 const LANGUAGES: { code: Language; label: string; sub: string }[] = [
-  { code: "Hinglish", label: "Hinglish", sub: "Hindi + English Mix" },
-  { code: "English", label: "English", sub: "Global Standard" },
-  { code: "Hindi", label: "हिन्दी", sub: "Devanagari Script" },
-  { code: "Tamil", label: "தமிழ்", sub: "Colloquial Dialect" },
-  { code: "Telugu", label: "తెలుగు", sub: "Colloquial Dialect" },
+  { code: "Hinglish", label: "Hinglish", sub: "Hindi + English" },
+  { code: "English", label: "English", sub: "Standard" },
+  { code: "Hindi", label: "हिन्दी", sub: "Devanagari" },
+  { code: "Tamil", label: "தமிழ்", sub: "Tamil Script" },
+  { code: "Telugu", label: "తెలుగు", sub: "Telugu Script" },
 ];
 
 const INTENT_TAGS: { tag: IntentTag; emoji: string; desc: string }[] = [
-  { tag: "Exam Burnout", emoji: "📚", desc: "Academic pressure & finals stress" },
-  { tag: "Social Anxiety", emoji: "👥", desc: "Fear of judgment & crowd isolation" },
-  { tag: "Loneliness", emoji: "🌙", desc: "Feeling unheard & needing connection" },
-  { tag: "Family Pressure", emoji: "🏠", desc: "Expectations & domestic distress" },
-  { tag: "Career Uncertainty", emoji: "🧭", desc: "Future anxiety & job search stress" },
-  { tag: "Chronic Condition", emoji: "💊", desc: "Health burdens & daily fatigue" },
-  { tag: "Grief & Loss", emoji: "🕊️", desc: "Navigating deep loss & sorrow" },
-  { tag: "General Support", emoji: "🌱", desc: "Just need a kind, empathetic ear" },
+  { tag: "Exam Burnout", emoji: "📖", desc: "Study & exam stress" },
+  { tag: "Social Anxiety", emoji: "🌿", desc: "Overthinking & crowds" },
+  { tag: "Loneliness", emoji: "🏮", desc: "Needing a listening ear" },
+  { tag: "Family Pressure", emoji: "🏡", desc: "Home & expectations" },
+  { tag: "Career Uncertainty", emoji: "🧭", desc: "Future & job search" },
+  { tag: "Chronic Condition", emoji: "☕", desc: "Daily fatigue & health" },
+  { tag: "Grief & Loss", emoji: "🍃", desc: "Loss & heavy heart" },
+  { tag: "General Support", emoji: "🌱", desc: "Just wanting to chat" },
 ];
 
 export const SanctuaryLanding: React.FC<SanctuaryLandingProps> = ({
@@ -46,66 +45,75 @@ export const SanctuaryLanding: React.FC<SanctuaryLandingProps> = ({
   onOpenSandbox,
 }) => {
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 py-8 flex flex-col items-center gap-8">
-      {/* Header & Logo */}
-      <div className="text-center space-y-3">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-medium tracking-wide">
-          <Shield className="w-3.5 h-3.5 text-emerald-400" />
-          <span>ZERO-AUTH • ZERO-PERSISTENT-LOGS • SUB-2MS SAFETY SHIELD</span>
+    <div className="w-full max-w-4xl mx-auto px-4 py-2 flex flex-col items-center gap-6 select-none">
+      {/* ── Studio Ghibli-Style Wooden Station Terminal Board ── */}
+      <div className="w-full rounded-[28px] p-6 sm:p-9 space-y-7 border border-[#a3b899]/30 bg-[#121c15]/85 backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.65)] relative overflow-hidden text-[#f4efe6]">
+        {/* Soft atmospheric amber lantern glow in corners */}
+        <div className="absolute -top-20 -right-20 w-56 h-56 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-20 -left-20 w-56 h-56 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
+
+        {/* Top Board Rivets / Timber Header */}
+        <div className="flex items-center justify-between border-b border-[#a3b899]/20 pb-4">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-lg bg-[#243d2b] border border-[#a3b899]/40 flex items-center justify-center text-amber-200">
+              <Train className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="font-serif text-xs uppercase tracking-widest text-[#d8e2dc] font-bold">
+                Platform 1 • Sanctuary Station
+              </span>
+            </div>
+          </div>
+          <span className="text-[11px] font-mono text-[#a3b899] bg-[#1a2b1f] px-3 py-1 rounded-full border border-[#a3b899]/25">
+            100% Zero-Trace
+          </span>
         </div>
-        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-100 to-emerald-300 bg-clip-text text-transparent">
-          MitrAI <span className="text-emerald-400 font-light text-3xl sm:text-4xl">(SafeSpeak)</span>
-        </h1>
-        <p className="text-slate-400 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
-          A real-time, destigmatized peer sanctuary. Speak openly in your natural Indic dialect — our in-stream AI preserves emotion, translates nuances, and guards your safety.
-        </p>
-      </div>
 
-      {/* Main Glassmorphic Card */}
-      <div className="w-full glass-card rounded-3xl p-6 sm:p-8 space-y-8 border border-white/10 shadow-2xl relative overflow-hidden">
-        {/* Background ambient glow */}
-        <div className="absolute -top-24 -right-24 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
-
-        {/* Section 1: Transient Identity */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <label className="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-              <EyeOff className="w-4 h-4 text-emerald-400" />
-              1. Your Ephemeral Identity
-            </label>
-            <span className="text-xs text-slate-500">Auto-generated • No Login Required</span>
+        {/* Section 1: Travel Pass / Ephemeral Identity */}
+        <div className="space-y-2.5">
+          <div className="flex items-center justify-between text-xs font-serif text-[#d8e2dc]">
+            <span className="flex items-center gap-2 font-semibold tracking-wide">
+              <Ticket className="w-3.5 h-3.5 text-amber-300" />
+              1. Sanctuary Pass (Anonymous Stamp)
+            </span>
+            <span className="text-[11px] text-[#95a88d] font-sans">No sign-up or login required</span>
           </div>
 
-          <div className="flex items-center justify-between bg-slate-900/80 border border-white/10 rounded-2xl px-5 py-3.5 shadow-inner">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/30 to-teal-700/40 border border-emerald-400/40 flex items-center justify-center text-emerald-300 font-bold text-lg shadow-sm">
+          <div className="flex items-center justify-between bg-[#19261c]/90 border border-[#a3b899]/25 rounded-2xl p-3.5 sm:p-4 shadow-inner">
+            <div className="flex items-center gap-3.5">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#2f5238] to-[#1a3321] border border-[#a3b899]/40 flex items-center justify-center text-amber-200 font-serif font-bold text-xl shadow-md">
                 {alias.charAt(0)}
               </div>
               <div>
-                <div className="text-base font-bold text-white tracking-wide">{alias}</div>
-                <div className="text-xs text-emerald-400/80 font-medium">100% Anonymous & Volatile</div>
+                <div className="text-base sm:text-lg font-serif font-bold text-[#faf7f2] tracking-wide">
+                  {alias}
+                </div>
+                <div className="text-[11px] text-[#a3b899] font-sans flex items-center gap-1.5">
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>Transient Peer Identity</span>
+                </div>
               </div>
             </div>
+
             <button
               onClick={onRefreshAlias}
-              title="Roll a new alias"
-              className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white bg-slate-800/80 hover:bg-slate-800 border border-white/5 rounded-xl px-3 py-2 transition-all cursor-pointer"
+              title="Stamp a new alias"
+              className="flex items-center gap-1.5 text-xs text-[#d8e2dc] hover:text-white bg-[#253b2a] hover:bg-[#2f4a35] border border-[#a3b899]/30 rounded-xl px-3.5 py-2 transition-all cursor-pointer shadow-sm active:scale-95"
             >
-              <RefreshCw className="w-3.5 h-3.5" />
-              <span>Shuffle</span>
+              <RefreshCw className="w-3.5 h-3.5 text-amber-300" />
+              <span className="font-serif">New Stamp</span>
             </button>
           </div>
         </div>
 
-        {/* Section 2: Native Language Selector */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <label className="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-              <Globe className="w-4 h-4 text-emerald-400" />
-              2. Your Native Speaking Dialect
-            </label>
-            <span className="text-xs text-slate-500">Real-time Emotion-Preserving Translation</span>
+        {/* Section 2: Dialect Selection Chips */}
+        <div className="space-y-2.5">
+          <div className="flex items-center justify-between text-xs font-serif text-[#d8e2dc]">
+            <span className="flex items-center gap-2 font-semibold tracking-wide">
+              <Compass className="w-3.5 h-3.5 text-amber-300" />
+              2. Your Speaking Dialect
+            </span>
+            <span className="text-[11px] text-[#95a88d] font-sans">Emotion-preserving translation</span>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
@@ -115,118 +123,107 @@ export const SanctuaryLanding: React.FC<SanctuaryLandingProps> = ({
                 <button
                   key={lang.code}
                   onClick={() => onSelectLang(lang.code)}
-                  className={`p-3 rounded-2xl text-left border transition-all cursor-pointer flex flex-col justify-between min-h-[72px] ${
+                  className={`p-3 rounded-2xl text-left border transition-all cursor-pointer flex flex-col justify-between min-h-[70px] ${
                     isSelected
-                      ? "bg-emerald-500/15 border-emerald-500 text-white shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-400/50"
-                      : "bg-slate-900/50 border-white/5 text-slate-400 hover:border-white/20 hover:text-slate-200"
+                      ? "bg-[#2a4d33] border-amber-300/80 text-[#faf7f2] shadow-[0_4px_16px_rgba(42,77,51,0.6)] ring-1 ring-amber-300/40 transform scale-[1.02]"
+                      : "bg-[#17231a]/80 border-[#a3b899]/20 text-[#c2d1bd] hover:bg-[#1f3024] hover:border-[#a3b899]/40"
                   }`}
                 >
-                  <span className={`text-sm font-semibold ${isSelected ? "text-emerald-300" : "text-slate-200"}`}>
-                    {lang.label}
-                  </span>
-                  <span className="text-[11px] text-slate-500 line-clamp-1">{lang.sub}</span>
+                  <span className="font-serif font-bold text-sm text-[#faf7f2]">{lang.label}</span>
+                  <span className="text-[10px] text-[#9eb297]">{lang.sub}</span>
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* Section 3: Topic / Intent Cloud */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <label className="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-              <HeartHandshake className="w-4 h-4 text-emerald-400" />
-              3. What's on your mind today? (Select 1 or more)
-            </label>
-            <span className="text-xs text-emerald-400 font-medium">
-              {selectedTags.length} selected
+        {/* Section 3: Topic Cloud / Concerns */}
+        <div className="space-y-2.5">
+          <div className="flex items-center justify-between text-xs font-serif text-[#d8e2dc]">
+            <span className="flex items-center gap-2 font-semibold tracking-wide">
+              <BookOpen className="w-3.5 h-3.5 text-amber-300" />
+              3. What brings you to the Sanctuary today?
+            </span>
+            <span className="text-[11px] font-mono text-amber-300">
+              {selectedTags.length > 0 ? `${selectedTags.length} selected` : "Select 1 or more"}
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
-            {INTENT_TAGS.map((item) => {
-              const isChecked = selectedTags.includes(item.tag);
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            {INTENT_TAGS.map(({ tag, emoji, desc }) => {
+              const isSelected = selectedTags.includes(tag);
               return (
                 <button
-                  key={item.tag}
-                  onClick={() => onToggleTag(item.tag)}
-                  className={`p-3 rounded-2xl text-left border transition-all cursor-pointer flex items-start gap-2.5 ${
-                    isChecked
-                      ? "bg-emerald-500/15 border-emerald-500/80 text-white ring-1 ring-emerald-400/40"
-                      : "bg-slate-900/40 border-white/5 text-slate-400 hover:border-white/15 hover:bg-slate-900/70"
+                  key={tag}
+                  onClick={() => onToggleTag(tag)}
+                  className={`p-3 rounded-2xl text-left border transition-all cursor-pointer flex flex-col justify-between min-h-[74px] ${
+                    isSelected
+                      ? "bg-[#2a4d33] border-emerald-400/80 text-[#faf7f2] shadow-[0_4px_14px_rgba(40,80,50,0.5)] ring-1 ring-emerald-400/40"
+                      : "bg-[#17231a]/80 border-[#a3b899]/20 text-[#c2d1bd] hover:bg-[#1f3024] hover:border-[#a3b899]/40"
                   }`}
                 >
-                  <span className="text-lg p-1 rounded-lg bg-white/5">{item.emoji}</span>
-                  <div className="flex-1 min-w-0">
-                    <div className={`text-xs font-semibold ${isChecked ? "text-emerald-300" : "text-slate-200"}`}>
-                      {item.tag}
-                    </div>
-                    <div className="text-[10px] text-slate-500 truncate">{item.desc}</div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-base">{emoji}</span>
+                    <span className="font-serif font-bold text-xs text-[#faf7f2] leading-tight">{tag}</span>
                   </div>
+                  <span className="text-[10px] text-[#9eb297] truncate mt-1">{desc}</span>
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* Primary Action Buttons */}
-        <div className="pt-2 flex flex-col sm:flex-row gap-3">
+        {/* Action Button Strip */}
+        <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+          {/* Main Departure CTA */}
           <button
             onClick={onFindPeer}
-            className="flex-1 py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold text-base shadow-xl shadow-emerald-500/25 flex items-center justify-center gap-2.5 transition-all transform active:scale-[0.99] cursor-pointer"
+            className="w-full sm:flex-1 py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-[#2d5738] via-[#3a6e47] to-[#2d5738] hover:from-[#356642] hover:to-[#356642] text-[#faf7f2] font-serif font-bold text-base shadow-[0_8px_24px_rgba(35,70,45,0.6)] border border-amber-300/40 flex items-center justify-center gap-2.5 transition-all transform active:scale-98 cursor-pointer"
           >
-            <Sparkles className="w-5 h-5 fill-slate-950 text-slate-950" />
-            <span>Find a Safe Peer</span>
-            <ArrowRight className="w-5 h-5" />
+            <Feather className="w-4 h-4 text-amber-300" />
+            <span>Step Inside & Connect With A Safe Peer</span>
           </button>
 
+          {/* Judge Sandbox Demo Button */}
           <button
             onClick={onOpenSandbox}
-            className="py-4 px-5 rounded-2xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 text-slate-200 font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:border-emerald-500/40 cursor-pointer shadow-sm"
+            className="w-full sm:w-auto py-3.5 sm:py-4 px-5 rounded-2xl bg-[#1a2b1e] hover:bg-[#223828] text-[#d8e2dc] hover:text-white font-serif text-xs font-semibold border border-[#a3b899]/30 flex items-center justify-center gap-2 transition-all cursor-pointer"
           >
-            <MonitorPlay className="w-4 h-4 text-emerald-400" />
-            <span>Live Judge Demo Sandbox</span>
+            <Compass className="w-3.5 h-3.5 text-amber-300" />
+            <span>Judge Sandbox Demo</span>
           </button>
-
-          <a
-            href="/hero-demo"
-            className="py-4 px-5 rounded-2xl bg-gradient-to-r from-orange-500/20 to-amber-500/20 hover:from-orange-500/30 hover:to-amber-500/30 border border-orange-500/40 text-orange-200 font-semibold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm"
-          >
-            <Sparkles className="w-4 h-4 text-orange-400" />
-            <span>Kinetic Hero Demo</span>
-          </a>
         </div>
       </div>
 
-      {/* Trust & Architecture Badges */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full text-center">
-        <div className="p-4 rounded-2xl bg-slate-900/40 border border-white/5 flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400">
-            <Shield className="w-5 h-5" />
+      {/* ── Vintage Platform Signboards (Architecture Pillars) ── */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full">
+        <div className="p-3.5 rounded-2xl bg-[#142017]/85 border border-[#a3b899]/25 backdrop-blur-md flex items-center gap-3">
+          <div className="p-2 rounded-xl bg-[#243d2b] text-amber-300 border border-[#a3b899]/30">
+            <ShieldCheck className="w-4 h-4" />
           </div>
           <div className="text-left">
-            <div className="text-xs font-bold text-slate-200">Aho-Corasick Circuit Breaker</div>
-            <div className="text-[11px] text-slate-400">Sub-2ms self-harm crisis intervention</div>
+            <div className="text-xs font-serif font-bold text-[#faf7f2]">Sub-2ms Crisis Breaker</div>
+            <div className="text-[10px] text-[#a3b899]">Aho-Corasick trie safety filter</div>
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-slate-900/40 border border-white/5 flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400">
-            <Globe className="w-5 h-5" />
+        <div className="p-3.5 rounded-2xl bg-[#142017]/85 border border-[#a3b899]/25 backdrop-blur-md flex items-center gap-3">
+          <div className="p-2 rounded-xl bg-[#243d2b] text-amber-300 border border-[#a3b899]/30">
+            <HeartHandshake className="w-4 h-4" />
           </div>
           <div className="text-left">
-            <div className="text-xs font-bold text-slate-200">Emotion-Preserving AI</div>
-            <div className="text-[11px] text-slate-400">Hinglish & Indic dialect translation</div>
+            <div className="text-xs font-serif font-bold text-[#faf7f2]">Emotion-Preserving NLP</div>
+            <div className="text-[10px] text-[#a3b899]">Hinglish & colloquial Indic translation</div>
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-slate-900/40 border border-white/5 flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400">
-            <Activity className="w-5 h-5" />
+        <div className="p-3.5 rounded-2xl bg-[#142017]/85 border border-[#a3b899]/25 backdrop-blur-md flex items-center gap-3">
+          <div className="p-2 rounded-xl bg-[#243d2b] text-amber-300 border border-[#a3b899]/30">
+            <Sparkles className="w-4 h-4" />
           </div>
           <div className="text-left">
-            <div className="text-xs font-bold text-slate-200">Zero-Trace RAM Purge</div>
-            <div className="text-[11px] text-slate-400">No database writes, complete memory burn</div>
+            <div className="text-xs font-serif font-bold text-[#faf7f2]">Zero-Trace Ephemeral RAM</div>
+            <div className="text-[10px] text-[#a3b899]">No database logs, memory dissolved on exit</div>
           </div>
         </div>
       </div>
